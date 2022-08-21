@@ -1,0 +1,19 @@
+<table>
+    <tr>
+        <th>Sensor</th>
+        <th>Datum</th>
+        <th>Temperatur</th>
+        <th>Luftfeuchtigkeit</th>
+        <th>Standort</th>
+        <th>Position</th>
+      </tr>
+    <tr *ngFor="let item of storeService.sensorenDaten">
+        <td>{{item.sensor.name}}</td>
+        <td>{{item.date | date:'longDate'}}</td>
+        <td>{{item.temperature}}</td>
+        <td>{{item.humidity}}</td>
+        <td>{{item.sensor.location}}</td>
+        <td>{{SensorPosition[item.sensor.position]}}</td>
+        <mat-icon (click)="deleteSensordata(item.id)">delete</mat-icon>
+    </tr>
+</table>
