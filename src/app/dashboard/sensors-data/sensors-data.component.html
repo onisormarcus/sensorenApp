@@ -1,19 +1,45 @@
-<table>
-    <tr>
-        <th>Sensor</th>
-        <th>Datum</th>
-        <th>Temperatur</th>
-        <th>Luftfeuchtigkeit</th>
-        <th>Standort</th>
-        <th>Position</th>
-      </tr>
-    <tr *ngFor="let item of storeService.sensorenDaten">
-        <td>{{item.sensor.name}}</td>
-        <td>{{item.date | date:'longDate'}}</td>
-        <td>{{item.temperature}}</td>
-        <td>{{item.humidity}}</td>
-        <td>{{item.sensor.location}}</td>
-        <td>{{SensorPosition[item.sensor.position]}}</td>
-        <mat-icon (click)="deleteSensordata(item.id)">delete</mat-icon>
-    </tr>
-</table>
+<div class="mat-elevation-z8 data-table">
+  <mat-table #table [dataSource]="dataSource" matSort aria-label="Elements">
+
+    <ng-container matColumnDef="name">
+      <mat-header-cell *matHeaderCellDef>Sensor</mat-header-cell>
+      <mat-cell *matCellDef="let element">{{element.sensor.name}}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="date">
+      <mat-header-cell *matHeaderCellDef>Datum</mat-header-cell>
+      <mat-cell *matCellDef="let element">{{element.date | date:'longDate'}}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="temperature">
+      <mat-header-cell *matHeaderCellDef>Temperatur</mat-header-cell>
+      <mat-cell *matCellDef="let element">{{element.temperature}}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="humidity">
+      <mat-header-cell *matHeaderCellDef>Luftfeuchtigkeit</mat-header-cell>
+      <mat-cell *matCellDef="let element">{{element.humidity}}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="location">
+      <mat-header-cell *matHeaderCellDef>Standort</mat-header-cell>
+      <mat-cell *matCellDef="let element">{{element.sensor.location}}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="position">
+      <mat-header-cell *matHeaderCellDef>Position</mat-header-cell>
+      <mat-cell *matCellDef="let element">{{element.sensor.position}}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="actions">
+      <mat-header-cell *matHeaderCellDef>Aktionen</mat-header-cell>
+      <mat-cell *matCellDef="let element"><button mat-mini-fab color="warn" (click)="deleteSensorData(element.id)"><mat-icon>delete</mat-icon></button></mat-cell>
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="columnsToDisplay"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: columnsToDisplay;"></mat-row>
+
+  </mat-table>
+
+  <mat-paginator #paginator [pageSizeOptions]="pageSizeOptions" [pageSize]="pageSize" [pageIndex]="pageIndex" [length]="length" (page)="pageEvent($event)" showFirstLastButtons></mat-paginator>
+</div>

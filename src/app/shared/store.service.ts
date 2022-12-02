@@ -1,14 +1,15 @@
 import { Injectable } from '@angular/core';
 import { Sensor } from '../Sensor';
-import { Sensorendata } from '../Sensorendata';
+import { SensorData } from '../SensorData';
 
 @Injectable({
   providedIn: 'root'
 })
 export class StoreService {
 
-  public sensorenDaten: Sensorendata[] = [];
-  public sensoren: Sensor[] = [];
+  public sensorData: SensorData[] = [];
+
+  public sensors: Sensor[] = [];
 
   constructor() { }
 }

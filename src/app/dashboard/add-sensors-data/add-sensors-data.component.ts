@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup, UntypedFormBuilder, UntypedFormGroup, Validators} from '@angular/forms';
 import { BackendService } from 'src/app/shared/backend.service';
 import { StoreService } from 'src/app/shared/store.service';
+import {Sensor} from "../../Sensor";
 
 @Component({
   selector: 'app-add-sensors-data',
@@ -11,27 +12,25 @@ import { StoreService } from 'src/app/shared/store.service';
 export class AddSensorsDataComponent implements OnInit {
 
   constructor(public storeService: StoreService, private formBuilder: UntypedFormBuilder, public backendService: BackendService) { }
-  public sensorenDataForm: any;
-  public showAddTask: boolean = false;
 
-  ngOnInit(): void {
-    this.sensorenDataForm = this.formBuilder.group({
-      sensorId: [0, [ Validators.required ] ],
-      temperature: ['', [ Validators.required ] ],
-      humidity: ['', [ Validators.required ] ],
-      date:  [null, [ Validators.required ] ]
-    });
+  public sensors: Sensor[] = [];
+
+  public sensorDataForm: FormGroup = new FormGroup({
+    sensorId: new FormControl(null, [ Validators.required, Validators.nullValidator ] ),
+    datetime:  new FormControl(new Date(), [ Validators.required ] ),
+    temperature: new FormControl('', [ Validators.required, Validators.min(-273), Validators.max(273) ] ),
+    humidity: new FormControl('', [ Validators.required, Validators.min(0), Validators.max(100) ] )
+  });
+
+  async ngOnInit() {
+    await this.backendService.getAllSensors()
+    this.sensors = this.storeService.sensors;
   }
 
   async onSubmit() {
-    if(this.sensorenDataForm?.valid) {
-      await this.backendService.addSensorsData(this.sensorenDataForm.value);
-      this.sensorenDataForm.reset();
+    if(this.sensorDataForm?.valid) {
+      await this.backendService.addSensorData(this.sensorDataForm.value);
+      this.sensorDataForm.reset();
     }
   }
-
-  toggleAddTask() {
-    this.showAddTask = !this.showAddTask;
-  }
-
 }

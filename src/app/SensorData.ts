@@ -1,6 +1,6 @@
 import { Sensor } from "./Sensor";
 
-export interface Sensorendata {
+export interface SensorData {
     id: number;
     date: Date;
     temperature: number,
